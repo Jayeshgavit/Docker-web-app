@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A simple, self-contained website for your first Docker hosting experiment.">
+  <title>Docker Flow — My first container</title>
+  <style>
+    /* Aurora on neutral black: green content, dark green detail, pale green highlights. */
+    :root { color-scheme: dark; font-family: "Segoe UI", Arial, sans-serif; color: #f5f5f5; background: #0a0a0a; }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    .wrap { width: min(1040px, 100% - 48px); margin: auto; }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 28px 0; border-bottom: 1px solid #303030; }
+    .brand { font-size: 20px; font-weight: 700; letter-spacing: -.5px; }
+    .tag { color: #aaa; font-size: 14px; }
+    main { padding: 80px 0 64px; }
+    .hero { display: grid; grid-template-columns: 1.2fr 1fr; gap: 64px; align-items: center; }
+    h1 { font-size: clamp(42px, 6.8vw, 72px); line-height: 1.06; letter-spacing: -.04em; margin: 0 0 24px; font-weight: 650; }
+    h1 span { color: #74a897; }
+    p { font-size: 17px; line-height: 1.7; color: #aaa; margin: 0; }
+    .intro { max-width: 480px; }
+    .demo { background: #74a897; color: #101b16; padding: 32px; border-radius: 12px; }
+    .demo h2 { margin: 0 0 12px; font-size: 22px; letter-spacing: -.02em; }
+    .demo p { color: #172d23; font-size: 16px; }
+    .counter { display: flex; align-items: baseline; gap: 12px; margin: 28px 0 20px; padding-top: 24px; border-top: 1px solid #244030; }
+    output { font-size: 64px; line-height: 1; font-weight: 650; font-variant-numeric: tabular-nums; }
+    .counter span { font-size: 15px; }
+    button { min-height: 46px; padding: 12px 20px; border: 1px solid #101b16; border-radius: 6px; background: #101b16; color: #fff; font: inherit; font-size: 16px; font-weight: 600; cursor: pointer; transition: background 150ms ease-out; }
+    button:hover { background: #244030; }
+    button:active { background: #000; }
+    button:focus-visible, a:focus-visible { outline: 3px solid #d3ede0; outline-offset: 4px; }
+    .demo small { display: block; margin-top: 16px; color: #172d23; line-height: 1.5; font-size: 13px; }
+    .learn { margin-top: 80px; border-top: 1px solid #303030; padding-top: 32px; }
+    .learn h2 { font-size: 24px; letter-spacing: -.02em; margin: 0 0 28px; }
+    ol { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; padding: 0; margin: 0; list-style: none; counter-reset: steps; }
+    li { counter-increment: steps; }
+    li::before { content: "0" counter(steps); display: block; color: #74a897; font-family: Consolas, monospace; font-size: 14px; margin-bottom: 12px; }
+    h3 { font-size: 18px; margin: 0 0 8px; font-weight: 600; }
+    li p { font-size: 15px; }
+    code { font-family: Consolas, monospace; color: #d3ede0; overflow-wrap: anywhere; }
+    footer { display: flex; justify-content: space-between; gap: 16px; padding: 24px 0; border-top: 1px solid #303030; color: #aaa; font-size: 13px; line-height: 1.6; }
+    footer a { display: inline-flex; align-items: center; min-height: 44px; color: #d3ede0; text-underline-offset: 4px; }
+    footer span { align-self: center; }
+    @media (max-width: 720px) {
+      :root { background: #000; }
+      .wrap { width: calc(100% - 40px); }
+      header { padding: 20px 0; }
+      main { padding: 48px 0; }
+      .hero { grid-template-columns: 1fr; gap: 32px; }
+      .demo { padding: 24px; }
+      .learn { margin-top: 48px; }
+      ol { grid-template-columns: 1fr; gap: 28px; }
+      footer { flex-direction: column; gap: 0; }
+      footer span { align-self: flex-start; }
+    }
+    @media (prefers-reduced-motion: reduce) { button { transition: none; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <span class="brand">Docker Flow.</span>
+      <span class="tag">A learning project</span>
+    </header>
+    <main>
+      <section class="hero" aria-labelledby="title">
+        <div>
+          <h1 id="title">Small website.<br><span>First container.</span></h1>
+          <p class="intro">Every experiment starts somewhere. This is a single HTML page, ready to become your first Docker-hosted website.</p>
+        </div>
+        <section class="demo" aria-labelledby="demo-title">
+          <h2 id="demo-title">Give it a click.</h2>
+          <p>A little interaction to try out your page.</p>
+          <div class="counter">
+            <output id="count" aria-live="polite" aria-label="Click count">0</output>
+            <span id="click-label">clicks this visit</span>
+          </div>
+          <button id="add-click" type="button">Add a click</button>
+          <small>Refresh to reset. This counter runs in your browser.</small>
+          <noscript><p>Enable JavaScript to try the counter.</p></noscript>
+        </section>
+      </section>
+      <section class="learn" aria-labelledby="learn-title">
+        <h2 id="learn-title">Your next experiment</h2>
+        <ol>
+          <li><h3>Make it yours</h3><p>Edit the heading in <code>index.html</code>. Open the file in your browser to see your changes.</p></li>
+          <li><h3>Package the page</h3><p>Next, write a Dockerfile that copies this page into a web server image such as Nginx.</p></li>
+          <li><h3>Run a container</h3><p>Build your image, run it with a published port, and visit your website on localhost.</p></li>
+        </ol>
+      </section>
+    </main>
+    <footer>
+      <span>One file. No dependencies. Room to experiment.</span>
+      <a href="#title">Back to top ↑</a>
+    </footer>
+  </div>
+  <script>
+    const count = document.getElementById('count');
+    const label = document.getElementById('click-label');
+    document.getElementById('add-click').addEventListener('click', () => {
+      const clicks = Number(count.value) + 1;
+      count.value = String(clicks);
+      label.textContent = clicks === 1 ? 'click this visit' : 'clicks this visit';
+    });
+  </script>
+</body>
+</html>
